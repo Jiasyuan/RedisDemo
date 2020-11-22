@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using RedisDemo.Repository.DTO;
 
 namespace RedisDemo.Repository.Repository.Interface
 {
-    interface IECommerceRepository
+    public interface IECommerceRepository
     {
+        Tuple<string, List<EcommerceDto>> GetECommerce();
     }
 }
