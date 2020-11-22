@@ -6,6 +6,10 @@ namespace RedisDemo.Repository.Repository.Interface
 {
     public interface IECommerceRepository
     {
+        /// <summary>
+        /// Get All E-Commerce
+        /// </summary>
+        /// <returns></returns>
         Tuple<string, List<EcommerceDto>> GetECommerce();
     }
 }
