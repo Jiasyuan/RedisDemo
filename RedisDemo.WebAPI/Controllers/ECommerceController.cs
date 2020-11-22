@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RedisDemo.Repository.Repository.Interface;
+using RedisDemo.WebAPI.Model;
 
 namespace RedisDemo.WebAPI.Controllers
 {
@@ -19,6 +15,14 @@ namespace RedisDemo.WebAPI.Controllers
             this._eCommerceRepository = eCommerceRepository;
         }
 
-        
+        public ECommerceResponse GetECommerce()
+        {
+            var resultTuple = _eCommerceRepository.GetECommerce();
+            return new ECommerceResponse()
+            {
+                DataFrom = resultTuple.Item1,
+                Result = resultTuple.Item2
+            };
+        }
     }
 }
