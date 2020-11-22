@@ -11,10 +11,13 @@ namespace RedisDemo.Repository.Repository
     public class EcommerceRepository : IDisposable, IECommerceRepository
     {
         private readonly IDatabaseConnectionHelper _databaseConnectionHelper;
-
-        public EcommerceRepository(IDatabaseConnectionHelper databaseConnectionHelper)
+        private readonly IRedisCacheHelper _redisCacheHelper;
+        private Func<IEnumerable<EcommerceDto>> _getECommerceFromDb;
+        public EcommerceRepository(IDatabaseConnectionHelper databaseConnectionHelper, IRedisCacheHelper redisCacheHelper)
         {
             this._databaseConnectionHelper = databaseConnectionHelper;
+            this._redisCacheHelper = redisCacheHelper;
+            this._getECommerceFromDb = GetECommerceFromDb;
         }
 
         #region IDisposable Support
@@ -49,37 +52,33 @@ namespace RedisDemo.Repository.Repository
 
         public Tuple<string, List<EcommerceDto>> GetECommerce()
         {
-            return null;
+            return _redisCacheHelper.GetCacheTuple<EcommerceDto>("ECommerce", _getECommerceFromDb);
         }
 
         /// <summary>
         /// Get ECommerce From DataBase
         /// </summary>
         /// <returns></returns>
-        private Tuple<string, List<EcommerceDto>> GetECommerceFromDb()
+        protected IEnumerable<EcommerceDto> GetECommerceFromDb()
         {
             string sqlCommand = @"SELECT [ecommerce_Id]
                                   ,[en_name]
                                   ,[ch_name]
                               FROM [dbo].[ecommerce] with(nolock)";
-            List<EcommerceDto> ECommerceList = new List<EcommerceDto>();
+            
             using (var conn = _databaseConnectionHelper.Create())
             {
-                var result = conn.Query<EcommerceDto>(sqlCommand);
-                if (result != null && result.Any())
-                    ECommerceList = result.ToList();
+                return conn.Query<EcommerceDto>(sqlCommand);
             }
-            Tuple<string, List<EcommerceDto>> resultTuple = Tuple.Create("Data From DB", ECommerceList);
-
-            return resultTuple;
         }
-
-        private Tuple<string, List<EcommerceDto>> GetECommerceFromRedis()
+        /*
+        private Tuple<string, IEnumerable<EcommerceDto>> GetECommerceFromRedis()
         {
-            List<EcommerceDto> ECommerceList = new List<EcommerceDto>();
-            Tuple<string, List<EcommerceDto>> resultTuple = Tuple.Create("Data From Redis", ECommerceList);
+            IEnumerable<EcommerceDto> eCommerceList =null;
+
+            Tuple<string, IEnumerable<EcommerceDto>> resultTuple = Tuple.Create("Data From Redis", eCommerceList);
 
             return resultTuple;
-        }
+        }*/
     }
 }

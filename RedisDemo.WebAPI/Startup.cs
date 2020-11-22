@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RedisDemo.Repository.Common;
 using RedisDemo.Repository.Common.Helper;
 using RedisDemo.Repository.Common.Interface;
 using RedisDemo.Repository.Repository;
@@ -23,7 +24,10 @@ namespace RedisDemo.WebAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
             services.AddSingleton<IDatabaseConnectionHelper, AzureDbConnectionHelper>();
+            services.AddSingleton<IRedisConnectionMultiplexer, RedisConnectionMultiplexer>();
+            services.AddSingleton<IRedisCacheHelper, RedisCacheHelper>();
             services.AddTransient<IECommerceRepository, EcommerceRepository>();
         }
 
