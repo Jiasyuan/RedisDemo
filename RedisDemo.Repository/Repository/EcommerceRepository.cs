@@ -4,10 +4,11 @@ using System.Linq;
 using Dapper;
 using RedisDemo.Repository.Common.Interface;
 using RedisDemo.Repository.DTO;
+using RedisDemo.Repository.Repository.Interface;
 
 namespace RedisDemo.Repository.Repository
 {
-    public class EcommerceRepository : IDisposable
+    public class EcommerceRepository : IDisposable, IECommerceRepository
     {
         private readonly IDatabaseConnectionHelper _databaseConnectionHelper;
 
@@ -65,7 +66,7 @@ namespace RedisDemo.Repository.Repository
             using (var conn = _databaseConnectionHelper.Create())
             {
                 var result = conn.Query<EcommerceDto>(sqlCommand);
-                if (result != null && result.Count() > 0)
+                if (result != null && result.Any())
                     ECommerceList = result.ToList();
             }
             Tuple<string, List<EcommerceDto>> resultTuple = Tuple.Create("Data From DB", ECommerceList);
