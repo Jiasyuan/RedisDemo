@@ -15,6 +15,7 @@ namespace RedisDemo.WebAPI.Controllers
             this._eCommerceRepository = eCommerceRepository;
         }
 
+        [HttpGet]
         public ECommerceResponse GetECommerce()
         {
             var resultTuple = _eCommerceRepository.GetECommerce();
