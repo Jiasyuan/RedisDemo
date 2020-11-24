@@ -27,6 +27,7 @@ namespace RedisDemo.WebAPI
 
             services.AddSingleton<IDatabaseConnectionHelper, AzureDbConnectionHelper>();
             services.AddSingleton<IRedisConnectionMultiplexer, RedisConnectionMultiplexer>();
+            services.AddSingleton<IRedLockHelper, RedLockHelper>();
             services.AddSingleton<IRedisCacheHelper, RedisCacheHelper>();
             services.AddTransient<IECommerceRepository, EcommerceRepository>();
         }
