@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\RedisRedisDemo.Contract\RedisRedisDemo.Contract.csproj" />
+    <ProjectReference Include="..\RedisRedisDemo.Test.Library\RedisRedisDemo.Test.Library.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisRedisDemo.Test.Library", "RedisRedisDemo.Test.Library\RedisRedisDemo.Test.Library.csproj", "{E6559EEF-D799-4B12-959B-30537BE36A31}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisRedisDemo.Test.UseSingleServer", "RedisRedisDemo.Test.UseSingleServer\RedisRedisDemo.Test.UseSingleServer.csproj", "{C3F7731C-ECF9-46F2-A09E-FC32447F43C7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisRedisDemo.Contract", "..\RedisRedisDemo.Contract\RedisRedisDemo.Contract.csproj", "{625EC381-A2C0-4025-A5FE-D13462FC6AAA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedisRedisDemo.UseMultipleServer", "RedisRedisDemo.UseMultipleServer\RedisRedisDemo.UseMultipleServer.csproj", "{9F6FE915-8097-4E69-9F29-6BCF26A2C0FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E6559EEF-D799-4B12-959B-30537BE36A31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6559EEF-D799-4B12-959B-30537BE36A31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6559EEF-D799-4B12-959B-30537BE36A31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6559EEF-D799-4B12-959B-30537BE36A31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3F7731C-ECF9-46F2-A09E-FC32447F43C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3F7731C-ECF9-46F2-A09E-FC32447F43C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3F7731C-ECF9-46F2-A09E-FC32447F43C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3F7731C-ECF9-46F2-A09E-FC32447F43C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{625EC381-A2C0-4025-A5FE-D13462FC6AAA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{625EC381-A2C0-4025-A5FE-D13462FC6AAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{625EC381-A2C0-4025-A5FE-D13462FC6AAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{625EC381-A2C0-4025-A5FE-D13462FC6AAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F6FE915-8097-4E69-9F29-6BCF26A2C0FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F6FE915-8097-4E69-9F29-6BCF26A2C0FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F6FE915-8097-4E69-9F29-6BCF26A2C0FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F6FE915-8097-4E69-9F29-6BCF26A2C0FC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ECA5643E-13B8-4974-A93B-47BDDDB55E7D}
+	EndGlobalSection
+EndGlobal
