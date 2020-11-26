@@ -10,18 +10,20 @@ namespace RedisDemo.Repository.Common.Helper
     public class RedisCacheHelper : IRedisCacheHelper
     {
         private readonly IRedisConnectionMultiplexer _redisConnectionMultiplexer;
-        private ConnectionMultiplexer _redisConnection;
+        private readonly IRedLockHelper _redLockHelper;
+        private readonly ConnectionMultiplexer _redisConnection;
 
-        public RedisCacheHelper(IRedisConnectionMultiplexer redisConnectionMultiplexer)
+        public RedisCacheHelper(IRedisConnectionMultiplexer redisConnectionMultiplexer, IRedLockHelper redLockHelper)
         {
             this._redisConnectionMultiplexer = redisConnectionMultiplexer;
+            this._redLockHelper = redLockHelper;
             this._redisConnection = _redisConnectionMultiplexer.GteRedisConnection();
         }
 
 
         public List<T> GetCache<T>(string key, Func<IEnumerable<T>> dataAccessProvider)
         {
-            List<T> result = null;
+            List<T> result;
             var cacheDb = _redisConnection.GetDatabase();
             var redisValue = cacheDb.StringGet(key);
             if (redisValue.IsNullOrEmpty)
@@ -39,24 +41,56 @@ namespace RedisDemo.Repository.Common.Helper
 
         public Tuple<string, List<T>> GetCacheTuple<T>(string key, Func<IEnumerable<T>> dataAccessProvider)
         {
-            Tuple<string, List<T>> resultTuple = null;
-            IEnumerable<T> result = null;
+            Tuple<string, List<T>> resultTuple;
+            List<T> result;
             var cacheDb = _redisConnection.GetDatabase();
             var redisValue = cacheDb.StringGet(key);
             if (redisValue.IsNullOrEmpty)
             {
-                result = dataAccessProvider();
-                resultTuple = Tuple.Create("Data From DB", result?.ToList());
-                ListSet<T>(key, result?.ToList());
+                result = dataAccessProvider()?.ToList();
+                resultTuple = Tuple.Create("Data From DB", result);
+                ListSet<T>(key, result);
             }
             else
             {
                 result = JsonSerializer.Deserialize<List<T>>(redisValue);
-                resultTuple = Tuple.Create("Data From Redis", result?.ToList());
+                resultTuple = Tuple.Create("Data From Redis", result);
             }
             return resultTuple;
         }
 
+        public async System.Threading.Tasks.Task<Tuple<string, List<T>>> GetCacheTupleRedLockAsync<T>(string key, Func<IEnumerable<T>> dataAccessProvider)
+        {
+            Tuple<string, List<T>> resultTuple = null;
+            
+            var resource = $"lockkey_{key}";//resource lock key
+            var expiry = TimeSpan.FromSeconds(30);//lock object 失效時間
+            using (var redLock = await _redLockHelper.GetRedLockFactory().CreateLockAsync(resource, expiry)) 
+            {
+                // 確定取得 lock 所有權
+                if (redLock.IsAcquired)
+                {
+                    List<T> result;
+                    var cacheDb = _redisConnection.GetDatabase();
+                    var redisValue = cacheDb.StringGet(key);
+                    if (redisValue.IsNullOrEmpty)
+                    {
+                        result = dataAccessProvider()?.ToList();
+                        resultTuple = Tuple.Create("Data From DB", result);
+                        ListSet<T>(key, result);
+                    }
+                    else
+                    {
+                        result = JsonSerializer.Deserialize<List<T>>(redisValue);
+                        resultTuple = Tuple.Create("Data From Redis", result?.ToList());
+                    }
+
+                }
+            }
+            // the lock is automatically released at the end of the using block
+
+            return resultTuple;
+        }
 
         private void ListSet<T>(string key, List<T> value)
         {
