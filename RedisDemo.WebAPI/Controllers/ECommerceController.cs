@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using RedisDemo.Repository.DTO;
 using RedisDemo.Repository.Repository.Interface;
-using RedisDemo.WebAPI.Model;
+using RedisDemo.WebAPI.Helper;
+using RedisRedisDemo.Contract;
 
 namespace RedisDemo.WebAPI.Controllers
 {
@@ -19,10 +22,11 @@ namespace RedisDemo.WebAPI.Controllers
         public ECommerceResponse GetECommerce()
         {
             var resultTuple = _eCommerceRepository.GetECommerce();
+            var result = MapperHelper.MapperProperties<EcommerceDto, EcommerceModel>(resultTuple.Item2);
             return new ECommerceResponse()
             {
                 DataFrom = resultTuple.Item1,
-                Result = resultTuple.Item2
+                Result = result.ToList()
             };
         }
     }
