@@ -6,6 +6,15 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RedisDemo.Repository\RedisDemo.Repository.csproj" />
+    <ProjectReference Include="..\RedisRedisDemo.Contract\RedisRedisDemo.Contract.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Model\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
   </ItemGroup>
 
 
