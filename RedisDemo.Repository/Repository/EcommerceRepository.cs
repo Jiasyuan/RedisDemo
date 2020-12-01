@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using Dapper;
 using RedisDemo.Repository.Common.Interface;
 using RedisDemo.Repository.DTO;
@@ -65,7 +65,7 @@ namespace RedisDemo.Repository.Repository
                                   ,[en_name]
                                   ,[ch_name]
                               FROM [dbo].[ecommerce] with(nolock)";
-            
+            Thread.Sleep(1800);
             using (var conn = _databaseConnectionHelper.Create())
             {
                 return conn.Query<EcommerceDto>(sqlCommand);
