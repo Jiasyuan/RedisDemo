@@ -23,7 +23,8 @@ namespace RedisDemo.WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            //讓Json Serialize後的大小寫與Model一致
+            services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             services.AddSingleton<IDatabaseConnectionHelper, AzureDbConnectionHelper>();
             services.AddSingleton<IRedisConnectionMultiplexer, RedisConnectionMultiplexer>();
