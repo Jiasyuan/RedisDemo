@@ -12,8 +12,8 @@ namespace RedisRedisDemo.UseMultipleServer
     {
         static void Main(string[] args)
         {
-            string host1 = "";
-            string host2 = "";
+            string host1 = "https://localhost:5002/api";
+            string host2 = "https://localhost:5003/api";
             string methoud = "ECommerce";
             //string methoud = "ECommerceLock";
             ConcurrentStack<ECommerceResponse> resultConcurrentStack1 = new ConcurrentStack<ECommerceResponse>();
