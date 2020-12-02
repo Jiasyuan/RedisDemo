@@ -11,13 +11,13 @@ namespace RedisDemo.Repository.Common.Helper
     {
         private readonly IRedisConnectionMultiplexer _redisConnectionMultiplexer;
         private readonly IRedLockHelper _redLockHelper;
-        private readonly ConnectionMultiplexer _redisConnection;
+        private static ConnectionMultiplexer _redisConnection;
 
         public RedisCacheHelper(IRedisConnectionMultiplexer redisConnectionMultiplexer, IRedLockHelper redLockHelper)
         {
             this._redisConnectionMultiplexer = redisConnectionMultiplexer;
             this._redLockHelper = redLockHelper;
-            this._redisConnection = _redisConnectionMultiplexer.GteRedisConnection();
+            _redisConnection = _redisConnectionMultiplexer.GteRedisConnection();
         }
 
 
@@ -43,18 +43,22 @@ namespace RedisDemo.Repository.Common.Helper
         {
             Tuple<string, List<T>> resultTuple;
             List<T> result;
-            var cacheDb = _redisConnection.GetDatabase();
-            var redisValue = cacheDb.StringGet(key);
-            if (redisValue.IsNullOrEmpty)
+            
+            lock (_redisConnection)
             {
-                result = dataAccessProvider()?.ToList();
-                resultTuple = Tuple.Create("Data From DB", result);
-                ListSet<T>(key, result);
-            }
-            else
-            {
-                result = JsonSerializer.Deserialize<List<T>>(redisValue);
-                resultTuple = Tuple.Create("Data From Redis", result);
+                var cacheDb = _redisConnection.GetDatabase();
+                var redisValue = cacheDb.StringGet(key);
+                if (redisValue.IsNullOrEmpty)
+                {
+                    result = dataAccessProvider()?.ToList();
+                    resultTuple = Tuple.Create("Data From DB", result);
+                    ListSet<T>(key, result);
+                }
+                else
+                {
+                    result = JsonSerializer.Deserialize<List<T>>(redisValue);
+                    resultTuple = Tuple.Create("Data From Redis", result);
+                }
             }
             return resultTuple;
         }
