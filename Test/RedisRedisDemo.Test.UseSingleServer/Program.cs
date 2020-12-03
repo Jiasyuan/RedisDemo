@@ -12,6 +12,7 @@ namespace RedisRedisDemo.Test.UseSingleServer
         static void Main(string[] args)
         {
             string host = "https://localhost:5002/api";
+            //string methoud = "ECommerceLock";
             string methoud = "ECommerce";
             ConcurrentStack<ECommerceResponse> resultConcurrentStack = new ConcurrentStack<ECommerceResponse>();
             Parallel.For(1, 11, (i, state) =>
