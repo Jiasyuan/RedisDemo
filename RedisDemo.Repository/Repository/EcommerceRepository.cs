@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using Dapper;
 using RedisDemo.Repository.Common.Interface;
 using RedisDemo.Repository.DTO;
@@ -13,6 +14,7 @@ namespace RedisDemo.Repository.Repository
         private readonly IDatabaseConnectionHelper _databaseConnectionHelper;
         private readonly IRedisCacheHelper _redisCacheHelper;
         private Func<IEnumerable<EcommerceDto>> _getECommerceFromDb;
+
         public EcommerceRepository(IDatabaseConnectionHelper databaseConnectionHelper, IRedisCacheHelper redisCacheHelper)
         {
             this._databaseConnectionHelper = databaseConnectionHelper;
@@ -54,6 +56,12 @@ namespace RedisDemo.Repository.Repository
         {
             return _redisCacheHelper.GetCacheTuple<EcommerceDto>("ECommerce", _getECommerceFromDb);
         }
+
+        public async Task<Tuple<string, List<EcommerceDto>>> GetECommerceLock()
+        {
+            return await  _redisCacheHelper.GetCacheTupleRedLockAsync<EcommerceDto>("ECommerce", _getECommerceFromDb);
+        }
+
 
         /// <summary>
         /// Get ECommerce From DataBase

@@ -69,7 +69,9 @@ namespace RedisDemo.Repository.Common.Helper
             
             var resource = $"lockkey_{key}";//resource lock key
             var expiry = TimeSpan.FromSeconds(30);//lock object 失效時間
-            using (var redLock = await _redLockHelper.GetRedLockFactory().CreateLockAsync(resource, expiry)) 
+            var wait = TimeSpan.FromSeconds(10);//放棄重試時間
+            var retry = TimeSpan.FromSeconds(1);//重試間隔時間
+            using (var redLock = await _redLockHelper.GetRedLockFactory().CreateLockAsync(resource, expiry, wait, retry)) 
             {
                 // 確定取得 lock 所有權
                 if (redLock.IsAcquired)
